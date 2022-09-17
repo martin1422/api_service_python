@@ -60,13 +60,30 @@ def personas():
         # Debe verificar si el limit y offset son válidos cuando
         # no son especificados en la URL
 
+
         limit = 0
         offset = 0
 
-        result = persona.report(limit=limit, offset=offset)
-        return jsonify(result)
+        # Obtener de la query string los valores de limit y offset
+        limit_str = str(request.args.get('limit'))
+        offset_str = str(request.args.get('offset'))
+
+        if(limit_str is not None) and (limit_str.isdigit()):
+            limit = int(limit_str)
+
+        if(offset_str is not None) and (offset_str.isdigit()):
+            offset = int(offset_str)
+
+        # Obtener el reporte
+        data = persona.report(limit=limit, offset=offset)
+
+        # Transformar json a json string para enviar al HTML
+        print(data)
+        return jsonify(data)
     except:
+        print("Error!!!")
         return jsonify({'trace': traceback.format_exc()})
+
 
 
 # ejercicio de practica Nº2
@@ -84,6 +101,15 @@ def registro():
             # Alumno: descomentar la linea persona.insert una vez implementado
             # lo anterior:
             # persona.insert(name, int(age))
+            name = str(request.form.get('name'))
+            age = str(request.form.get('age'))
+
+            if(name is None or age is None or age.isdigit() is False):
+            # Datos ingresados incorrectos
+                    return Response(status=401)
+            
+            persona.insert(name, int(age))
+            
             return Response(status=200)
         except:
             return jsonify({'trace': traceback.format_exc()})
@@ -106,11 +132,11 @@ def comparativa():
 
         # Descomentar luego de haber implementado su función en persona.py:
 
-        # x, y = persona.dashboard()
-        # image_html = utils.graficar(x, y)
-        # return Response(image_html.getvalue(), mimetype='image/png')
+         x, y = persona.dashboard()
+         image_html = utils.graficar(x, y)
+         return Response(image_html.getvalue(), mimetype='image/png')
 
-        return "Alumno --> Realice la implementacion"
+        #return "Alumno --> Realice la implementacion"
     except:
         return jsonify({'trace': traceback.format_exc()})
 

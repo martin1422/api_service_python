@@ -54,24 +54,14 @@ def report(limit=0, offset=0):
     return json_result_list
 
 
+def dashboard():
+    query = db.session.query(Persona)
+    x= []
+    y= []
+    for person in query:
+            x.append(person.name)
+            y.append(person.age)
+    return (x , y)
+
 if __name__ == "__main__":
-    print("Test del modulo heart.py")
-
-    # Crear una aplicación Flask para testing
-    # y una base de datos fantasma (auxiliar o dummy)
-    # Referencia:
-    # https://stackoverflow.com/questions/17791571/how-can-i-test-a-flask-application-which-uses-sqlalchemy
-    app = Flask(__name__)
-    app.config['TESTING'] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///testdatabase.db"
-    # Bindear la DB con nuestra app Flask
-    db.init_app(app)
-    app.app_context().push()
-
-    db.create_all()
-
-    # Aquí se puede ensayar todo lo que necesitemos con nuestra DB
-    # ...
-
-    db.session.remove()
-    db.drop_all()
+   print("Inicio")

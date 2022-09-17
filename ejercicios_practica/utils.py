@@ -12,6 +12,7 @@ de ayuda para utilizar en la aplicación
 
 import io
 import base64
+from turtle import width
 
 import matplotlib
 matplotlib.use('Agg')   # Para multi-thread, non-interactive backend (avoid run in main loop)
@@ -27,8 +28,12 @@ def graficar(x, y):
         Crear el grafico que se desea mostrar en HTML
     '''
     fig, ax = plt.subplots(figsize=(16, 9))
+    ax.set_title(f'Comparativa')
+    ax.set_ylabel('Age')
+    ax.set_xlabel('Name')
+    ax.xaxis.grid(True)
     ax.plot(x, y)
-    ax.get_xaxis().set_visible(False)
+    ax.get_xaxis().set_visible(True)
 
     # Convertir ese grafico en una imagen para enviar por HTTP
     # y mostrar en el HTML
